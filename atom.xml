@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>SuperPaintman&#39;s Blog</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://superpaintman.github.io/blog-ru/"/>
+  <updated>2016-10-06T14:31:23.499Z</updated>
+  <id>https://superpaintman.github.io/blog-ru/</id>
+  
+  <author>
+    <name>Alexander Krivoshhekov</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Установка блога Hexo с помощью Docker</title>
+    <link href="https://superpaintman.github.io/blog-ru/post/hexo-installing/"/>
+    <id>https://superpaintman.github.io/blog-ru/post/hexo-installing/</id>
+    <published>2016-06-15T23:46:25.000Z</published>
+    <updated>2016-10-06T14:31:23.499Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="//hexo.io/"><img src="/images/logos/hexo-logo.svg" alt="Hexo Logo"></a></p>
+<p>Зачастую у многих программистов и гиков возникает желание завести свой блог. Но поднимать таких тяжеловесов как <strong>Wordpress</strong> или <strong>Octopress</strong> нет ни желания (как морального, так и желания тратить лишнии ресурсы своего сервера), ни времени на их настройку и содержание.</p>
+<p>Я не случайно выделил программистов и гиков, так как <a href="//hexo.io/">Hexo</a> (в своем базовом паке) не имеет ни админки, ни каких-либо привычных вещей для mouse-user’а. Весь движок это по-сути сборщик, перемалывающий <strong>Stylus</strong>‘ы, <strong>EJS</strong>‘ы, <strong>CoffeeScript</strong>‘ы, и конечно-же <strong>Markdown</strong>‘ы и собирающий из них статический сайт.</p>
+<p>Т.е. вы можете писать в своем блоге, не закрывая <strong>Emacs</strong>. </p>
+<a id="more"></a>
+<p><strong>Это дает нам ряд преимуществ:</strong></p>
+<ul>
+<li>сайт статический, а следовательно такие проблемы как БД, рендер страниц, нагрузка на CPU - просто исчезают. Это html страницы, которые занимают лишь место на жестком диске, не нагружая при этом систему.</li>
+<li>так как на выходе мы получаем статические файлы, ни кто нам не запрещает их закинуть, к примеру, на <strong>“Amazon S3”</strong>.</li>
+</ul>
+<p><strong>Из минусов же:</strong></p>
+<ul>
+<li>нет возможность (<a href="//github.com/jaredly/hexo-admin">без плагинов</a>) редактировать посты не через текстовые фалы, следовательно если у вас несколько авторов, вам придется прикручивать <a href="//github.com/jaredly/hexo-admin">админку</a>, или же давать доступ к SSH (Bucket’у) всем авторам.</li>
+<li>так как у нас нет DB, ни о каких счетчиках, опросниках и комментариях (<strong>Disqus</strong> не в счет) речи быть не может. Естественно, если вы сделаете себе отдельный REST API сервис, или напишете плагин для <strong>Sqlite</strong> эта проблема отпадет (благо, <strong>Hexo</strong> это позволяет более чем. Вообще расширяемость данного фреймворка это отдельная тема, но сейчас опустим это).</li>
+</ul>
+<p>Если вас, не смущают эти <del>надуманные</del> минусы, мы можем приступить к установке.</p>
+<hr>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>Первым делом вам естественно понадобится <strong>Docker</strong>.<br><em>(А на что вы расчитывали, он же указан в заголовке? Если у вы еще не используете это конейнерное чудо, я настоятельно рекомендую исправить этот момент прямо сейчас)</em>.</p>
+<p>Создадим папку под блога:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /apps/blog</span><br></pre></td></tr></table></figure>
+<p>А затем, непосредственно, запустим сам контейнер</p>
+<p><strong>Через обычную коммандную строку:</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run \</span><br><span class="line">  --name blog \</span><br><span class="line">  -p 8080:4000</span><br><span class="line">  -v /apps/blog:/app</span><br><span class="line">  <span class="_">-d</span> \</span><br><span class="line">  superpaintman/hexo</span><br></pre></td></tr></table></figure>
+<p>Кратко, что мы тут сделали, если вы незнакомы с Docker:</p>
+<p>1) <code>--name blog</code>  - присвоили имя нашему контейнеру<br>2) <code>-p 8080:4000</code> - открыли наружу <strong>8080</strong> порт и сопоставили его с портом <strong>4000</strong> из контейнера (по умолчанию Hexo сервер запускается именно на этом порте)<br>3) <code>-v /apps/blog:/app</code> - прилинковали нашу директорию <strong>/apps/blog</strong> к директории из контейнера<br>4) <code>-d</code> - демонизировали контейнер<br>5) <code>superpaintman/hexo</code> - указали откуда взять контейнер, в нашем случае, это - <a href="//hub.docker.com/r/superpaintman/hexo/">Docker HUB: superpaintman/hexo</a></p>
+<p>Теперь если вы откроете в браузере:</p>
+<blockquote>
+<p><a href="//youresite.com:8080">//youresite.com:8080</a></p>
+</blockquote>
+<p>вы попадете на свой свеженький блог. По сути дела, на этом вы можете уже отдаться графомании, но давайте сделаем все по-уму</p>
+<p><strong>Через Docker Compose</strong></p>
+<p>Как и в случае с самим <strong>Docker</strong>‘ом, я не буду останавливаться на этом, лишь буду надеяться, что вы сможете самостоятельно его установить.</p>
+<p>Итак, <code>docker-compose.yml</code>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># nginx</span></span><br><span class="line"><span class="attr">  nginx:</span></span><br><span class="line"><span class="attr">    image:</span> nginx:<span class="number">1.9</span><span class="number">.14</span></span><br><span class="line"></span><br><span class="line"><span class="attr">    container_name:</span> nginx</span><br><span class="line"></span><br><span class="line"><span class="attr">    restart:</span> always</span><br><span class="line"><span class="attr">    links:</span></span><br><span class="line"><span class="bullet">      -</span> blog</span><br><span class="line"></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> /etc/nginx:/etc/nginx</span><br><span class="line"></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># blog</span></span><br><span class="line"><span class="attr">  blog:</span></span><br><span class="line"><span class="attr">    image:</span> superpaintman/hexo</span><br><span class="line"></span><br><span class="line"><span class="attr">    container_name:</span> blog</span><br><span class="line"></span><br><span class="line"><span class="attr">    restart:</span> always</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ports:</span></span><br><span class="line">    <span class="comment">#   - "4000:4000"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> /apps/blog:/app</span><br></pre></td></tr></table></figure>
+<p>тут все, то-же самое, что и в случае с CLI вариантом, единственное отличие, что через Compose наша конфигурация стала более наглядной, а так-же мы можем конфигурировать сразу-же всю экосистему, а не по-одному контейнеру.</p>
+<p>Единственное отличие, мы не выносим порт <strong>4000</strong> наружу.</p>
+<hr>
+<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><p>Вы уже наверняка заметили <strong>Nginx</strong>.</p>
+<p>Он будет служить нам кеширующим сервером, а так-же это задел на <strong>SSL</strong> сертификат. Естественно, если на этой машине у вас бегает не только <strong>Hexo</strong>, вопрос о необходимости прокси-сервера у вас не должен стоять.</p>
+<p><strong>Конфиг для Nginx:</strong></p>
+<p><code>001_youresite.com</code> <strong>-&gt;</strong> <code>/ect/nginx/sites-available/</code></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="comment"># youresite.com</span></span><br><span class="line"><span class="comment">###</span></span><br><span class="line"><span class="attribute">upstream</span> youresite_com &#123;</span><br><span class="line">  <span class="comment"># При линковке, Docker прокидывает локальную сеть в конейнер. В нашем случае это `blog`</span></span><br><span class="line">  <span class="attribute">server</span> blog:<span class="number">4000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span>          <span class="number">80</span>;</span><br><span class="line">  <span class="attribute">server_name</span>     youresite.com;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">access_log</span>      /var/log/nginx/acc.youresite.com.log;</span><br><span class="line">  <span class="attribute">error_log</span>       /var/log/nginx/err.youresite.com.log;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Static</span></span><br><span class="line">  <span class="attribute">location</span> <span class="regexp">~ ^/(css|js)/</span> &#123;</span><br><span class="line">    <span class="comment"># Trust Proxy</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/snippets/trust_proxy.conf;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">expires</span> <span class="number">1d</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">proxy_pass</span> http://youresite_com;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="comment"># Trust Proxy</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/snippets/trust_proxy.conf;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">proxy_pass</span> http://youresite_com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Trust Proxy</strong>:</p>
+<p><code>trust_proxy.conf</code> <strong>-&gt;</strong> <code>/ect/nginx/snippets/</code></p>
+<p><em>Так как в контейнере отдачей статики и самих постов занимается Hexo, не плохо было-бы показать ему реальные адреса пользователей. В данном случае это абсолютно бесполезно, но это хороший задел на будущее</em></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_set_header</span>    Host <span class="variable">$host</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span>    X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span>    X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line"><span class="attribute">proxy_set_header</span>    X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line"></span><br><span class="line"><span class="attribute">proxy_redirect</span>      <span class="literal">off</span>;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Расширения"><a href="#Расширения" class="headerlink" title="Расширения"></a>Расширения</h2><p><strong>Hexo</strong> - весьма гибкая платформа, так, что сразу-же установим пару приятных ништяков:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo docker <span class="built_in">exec</span> blog npm install --save \</span><br><span class="line">  hexo-uglify \</span><br><span class="line">  hexo-autoprefixer \</span><br><span class="line">  hexo-clean-css \</span><br><span class="line">  hexo-autotag</span><br></pre></td></tr></table></figure>
+<p>1) <code>hexo-uglify</code> - так-как вся статика генерируется при запуске сервера, мы можем добавить минификатор <strong>JavaScript</strong><br>2) <code>hexo-clean-css</code> - минификатор <strong>CSS</strong><br>3) <code>hexo-autoprefixer</code> - автоматическая вставка вендорных префиксов <strong>CSS</strong><br>4) <code>hexo-autotag</code> - а так-же тег <code>autotag</code>, который может проверять есть ли на сайте записи с данным тегом, и автоматически подставляет линки на них</p>
+<p>После установки расширений, перезапустим контейнер, что-бы <strong>Hexo</strong> их подгрузил:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker restart blog</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Конфигурация"><a href="#Конфигурация" class="headerlink" title="Конфигурация"></a>Конфигурация</h2><p>Последний этап, который отделяет нас от написания нешей первой статьи - конфигурация</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /apps/blog/</span><br><span class="line">vim ./_config.yml</span><br></pre></td></tr></table></figure>
+<p>Тут нам достаточно указать:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Имя блога</span></span><br><span class="line"><span class="attr">title:</span> My amazing blog</span><br><span class="line"><span class="comment"># SEO описание</span></span><br><span class="line"><span class="attr">description:</span></span><br><span class="line"><span class="comment"># Ваше имя</span></span><br><span class="line"><span class="attr">author:</span> John Doe</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ссылку на ваш сайт</span></span><br><span class="line"><span class="attr">url:</span> http://yoursite.com</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Блоггерство"><a href="#Блоггерство" class="headerlink" title="Блоггерство"></a>Блоггерство</h2><p>Теперь вы готовы написать свой первый пост. Волнует, не правда ли? Конечно ж нет, это обычный пост.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /apps/blog/<span class="built_in">source</span>/_posts/</span><br></pre></td></tr></table></figure>
+<p>Можете удалить автоматически сгенерированный пост.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ./first_post.md</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>заметьте, расширение файла обязательно должно быть <code>.md</code></p>
+</blockquote>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Мой первый пост</span><br><span class="line">tags:</span><br><span class="line">  - Hexo</span><br><span class="line"><span class="section">  - Hello world</span><br><span class="line">---</span></span><br><span class="line"></span><br><span class="line">Я только, что установил <span class="strong">**Hexo**</span>!</span><br></pre></td></tr></table></figure>
+<p>Остается только сохранить этот файл, и демон внутри контейнера автоматически отрендарит его, и вы сможете прочесть свой шедевр на:</p>
+<blockquote>
+<p><a href="//youresite.com/first_post">//youresite.com/first_post</a></p>
+</blockquote>
+<hr>
+<h2 id="Документация"><a href="#Документация" class="headerlink" title="Документация"></a>Документация</h2><p>Больше о настройке и кастомизации <strong>Hexo</strong> вы сможете найти в его <a href="//hexo.io/docs/">официальной документации</a>.</p>
+<p>Удачного блоггерства и утешения своего эго :)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;//hexo.io/&quot;&gt;&lt;img src=&quot;/images/logos/hexo-logo.svg&quot; alt=&quot;Hexo Logo&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Зачастую у многих программистов и гиков возникает желание завести свой блог. Но поднимать таких тяжеловесов как &lt;strong&gt;Wordpress&lt;/strong&gt; или &lt;strong&gt;Octopress&lt;/strong&gt; нет ни желания (как морального, так и желания тратить лишнии ресурсы своего сервера), ни времени на их настройку и содержание.&lt;/p&gt;
+&lt;p&gt;Я не случайно выделил программистов и гиков, так как &lt;a href=&quot;//hexo.io/&quot;&gt;Hexo&lt;/a&gt; (в своем базовом паке) не имеет ни админки, ни каких-либо привычных вещей для mouse-user’а. Весь движок это по-сути сборщик, перемалывающий &lt;strong&gt;Stylus&lt;/strong&gt;‘ы, &lt;strong&gt;EJS&lt;/strong&gt;‘ы, &lt;strong&gt;CoffeeScript&lt;/strong&gt;‘ы, и конечно-же &lt;strong&gt;Markdown&lt;/strong&gt;‘ы и собирающий из них статический сайт.&lt;/p&gt;
+&lt;p&gt;Т.е. вы можете писать в своем блоге, не закрывая &lt;strong&gt;Emacs&lt;/strong&gt;. &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="tutorial" scheme="https://superpaintman.github.io/blog-ru/categories/tutorial/"/>
+    
+    
+      <category term="Hexo" scheme="https://superpaintman.github.io/blog-ru/tags/Hexo/"/>
+    
+      <category term="Docker" scheme="https://superpaintman.github.io/blog-ru/tags/Docker/"/>
+    
+      <category term="Nginx" scheme="https://superpaintman.github.io/blog-ru/tags/Nginx/"/>
+    
+      <category term="Системное Администрирование" scheme="https://superpaintman.github.io/blog-ru/tags/%D0%A1%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%BD%D0%BE%D0%B5-%D0%90%D0%B4%D0%BC%D0%B8%D0%BD%D0%B8%D1%81%D1%82%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/"/>
+    
+  </entry>
+  
+</feed>
