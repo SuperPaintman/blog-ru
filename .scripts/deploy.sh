@@ -1,7 +1,5 @@
 #!/bin/bash
 
-TRAVIS_REPO_SLUG="SuperPaintman/blog-ru"
-
 git_branch="gh-pages"
 deploy_dir=".deploy_git"
 public_dir="public"
@@ -21,7 +19,7 @@ mv ${public_dir}/* "${deploy_dir}/"
 
 (cd "${deploy_dir}" \
     && git --no-pager diff \
-    && echo git add . \
-    && echo git commit -m "Site updated: $(date '+%Y-%m-%d %H:%M:%S')" \
-    && echo git push origin "${git_branch}" \
+    && git add . \
+    && git commit -m "Site updated: $(date '+%Y-%m-%d %H:%M:%S')" \
+    && git push origin "${git_branch}" \
 )
