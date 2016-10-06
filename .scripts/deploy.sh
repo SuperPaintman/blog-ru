@@ -4,15 +4,15 @@ git_branch="gh-pages"
 deploy_dir=".deploy_git"
 public_dir="public"
 
-rm "${public_dir}" -frd
-rm "${deploy_dir}" -frd
+rm "${public_dir}" -fr
+rm "${deploy_dir}" -fr
 mkdir "${deploy_dir}"
 
 npm run build
 
 (cd "${deploy_dir}" \
     && git clone -q "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" -b "${git_branch}" . \
-    && rm * -frd \
+    && rm * -fr \
 )
 
 mv ${public_dir}/* "${deploy_dir}/"
