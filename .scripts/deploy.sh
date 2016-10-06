@@ -4,6 +4,12 @@ git_branch="gh-pages"
 deploy_dir=".deploy_git"
 public_dir="public"
 
+which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+eval $(ssh-agent -s)
+ssh-add <(echo "$GIT_PRIVATE_KEY")
+mkdir -p ~/.ssh
+echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
 rm "${public_dir}" -frd
 rm "${deploy_dir}" -frd
 mkdir "${deploy_dir}"
