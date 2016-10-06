@@ -1,0 +1,33 @@
+language: node_js
+
+sudo: false
+
+cache:
+  apt: true
+  directories:
+    - node_modules
+
+node_js: "6"
+
+before_script:
+  - git config --global user.email "${GIT_EMAIL}"
+  - git config --global user.name "${GIT_NAME}"
+
+install:
+  - npm install
+
+script:
+  - deploy_dir=".deploy_git"
+  - rm ./public -frd
+  - rm "${deploy_dir}" -frd
+  - mkdir "${deploy_dir}"
+  - npm run build
+  - cd "${deploy_dir}"
+  - git clone git@github.com:${TRAVIS_REPO_SLUG}.git -b gh-pages .
+  - rm * -frd
+  - cd ..
+  - mv ./public/* "${deploy_dir}/"
+  - cd "${deploy_dir}"
+  - git add .
+  - git commit -m "Site updated: `date '+%Y-%m-%d %H:%M:%S'`"
+  - git push origin gh-pages
