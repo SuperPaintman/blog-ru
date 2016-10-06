@@ -1,6 +1,6 @@
 ---
 title: Установка блога Hexo с помощью Docker
-date: 2016/6/16 04:46:25
+date: 2016-06-16 04:46:25
 categories:
   - tutorial
 tags:
