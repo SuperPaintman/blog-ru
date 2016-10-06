@@ -11,7 +11,7 @@ mkdir "${deploy_dir}"
 npm run build
 
 (cd "${deploy_dir}" \
-    && git clone -q "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" -b "${git_branch}" . \
+    && git clone -q "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" -b "${git_branch}" . > /dev/null 2>&1 \
     && rm * -fr \
 )
 
@@ -21,5 +21,5 @@ mv ${public_dir}/* "${deploy_dir}/"
     && git --no-pager diff \
     && git add . \
     && git commit -m "Site updated: $(date '+%Y-%m-%d %H:%M:%S')" \
-    && git push -q origin "${git_branch}" \
+    && git push -q origin "${git_branch}" > /dev/null 2>&1 \
 )
