@@ -5,7 +5,7 @@
   <link href="/blog-ru/atom.xml" rel="self"/>
   
   <link href="https://superpaintman.github.io/blog-ru/"/>
-  <updated>2016-10-06T16:31:29.853Z</updated>
+  <updated>2016-10-07T09:15:43.785Z</updated>
   <id>https://superpaintman.github.io/blog-ru/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="https://superpaintman.github.io/blog-ru/post/hexo-installing/"/>
     <id>https://superpaintman.github.io/blog-ru/post/hexo-installing/</id>
     <published>2016-06-16T04:46:25.000Z</published>
-    <updated>2016-10-06T16:31:29.853Z</updated>
+    <updated>2016-10-07T09:15:43.785Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="//hexo.io/"><img src="/images/logos/hexo-logo.svg" alt="Hexo Logo"></a></p>
+    <content type="html"><![CDATA[<p><a href="//hexo.io/"><img src="/blog-ru/post/hexo-installing/hexo-logo.svg" alt="hexo-logo.svg" title=""></a></p>
 <p>Зачастую у многих программистов и гиков возникает желание завести свой блог. Но поднимать таких тяжеловесов как <strong>Wordpress</strong> или <strong>Octopress</strong> нет ни желания (как морального, так и желания тратить лишнии ресурсы своего сервера), ни времени на их настройку и содержание.</p>
 <p>Я не случайно выделил программистов и гиков, так как <a href="//hexo.io/">Hexo</a> (в своем базовом паке) не имеет ни админки, ни каких-либо привычных вещей для mouse-user’а. Весь движок это по-сути сборщик, перемалывающий <strong>Stylus</strong>‘ы, <strong>EJS</strong>‘ы, <strong>CoffeeScript</strong>‘ы, и конечно-же <strong>Markdown</strong>‘ы и собирающий из них статический сайт.</p>
 <p>Т.е. вы можете писать в своем блоге, не закрывая <strong>Emacs</strong>. </p>
@@ -99,7 +99,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;//hexo.io/&quot;&gt;&lt;img src=&quot;/images/logos/hexo-logo.svg&quot; alt=&quot;Hexo Logo&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;//hexo.io/&quot;&gt;&lt;img src=&quot;/blog-ru/post/hexo-installing/hexo-logo.svg&quot; alt=&quot;hexo-logo.svg&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Зачастую у многих программистов и гиков возникает желание завести свой блог. Но поднимать таких тяжеловесов как &lt;strong&gt;Wordpress&lt;/strong&gt; или &lt;strong&gt;Octopress&lt;/strong&gt; нет ни желания (как морального, так и желания тратить лишнии ресурсы своего сервера), ни времени на их настройку и содержание.&lt;/p&gt;
 &lt;p&gt;Я не случайно выделил программистов и гиков, так как &lt;a href=&quot;//hexo.io/&quot;&gt;Hexo&lt;/a&gt; (в своем базовом паке) не имеет ни админки, ни каких-либо привычных вещей для mouse-user’а. Весь движок это по-сути сборщик, перемалывающий &lt;strong&gt;Stylus&lt;/strong&gt;‘ы, &lt;strong&gt;EJS&lt;/strong&gt;‘ы, &lt;strong&gt;CoffeeScript&lt;/strong&gt;‘ы, и конечно-же &lt;strong&gt;Markdown&lt;/strong&gt;‘ы и собирающий из них статический сайт.&lt;/p&gt;
 &lt;p&gt;Т.е. вы можете писать в своем блоге, не закрывая &lt;strong&gt;Emacs&lt;/strong&gt;. &lt;/p&gt;
