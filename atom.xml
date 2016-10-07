@@ -5,7 +5,7 @@
   <link href="/blog-ru/atom.xml" rel="self"/>
   
   <link href="https://superpaintman.github.io/blog-ru/"/>
-  <updated>2016-10-07T09:29:34.013Z</updated>
+  <updated>2016-10-07T09:44:42.000Z</updated>
   <id>https://superpaintman.github.io/blog-ru/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://superpaintman.github.io/blog-ru/post/hexo-installing/"/>
     <id>https://superpaintman.github.io/blog-ru/post/hexo-installing/</id>
     <published>2016-06-16T04:46:25.000Z</published>
-    <updated>2016-10-07T09:29:34.013Z</updated>
+    <updated>2016-10-07T09:44:42.000Z</updated>
     
     <content type="html"><![CDATA[<p><a href="//hexo.io/"><img src="/blog-ru/post/hexo-installing/hexo-logo.svg" alt="hexo-logo.svg" title=""></a></p>
 <p>Зачастую у многих программистов и гиков возникает желание завести свой блог. Но поднимать таких тяжеловесов как <strong>Wordpress</strong> или <strong>Octopress</strong> нет ни желания (как морального, так и желания тратить лишнии ресурсы своего сервера), ни времени на их настройку и содержание.</p>
