@@ -10,7 +10,7 @@ tags:
   - Системное Администрирование
 ---
 
-[![Hexo Logo][hexo-logo-image]][hexo-url]
+[{% asset_img hexo-logo.svg %}][hexo-url]
 
 Зачастую у многих программистов и гиков возникает желание завести свой блог. Но поднимать таких тяжеловесов как **Wordpress** или **Octopress** нет ни желания (как морального, так и желания тратить лишнии ресурсы своего сервера), ни времени на их настройку и содержание.
 
@@ -269,7 +269,6 @@ tags:
 Удачного блоггерства и утешения своего эго :)
 
 [hexo-url]: //hexo.io/
-[hexo-logo-image]: /images/logos/hexo-logo.svg
 [hexo-docs-url]: //hexo.io/docs/
 [hexo-admin-url]: //github.com/jaredly/hexo-admin
 [hexo-docker-url]: //hub.docker.com/r/superpaintman/hexo/
