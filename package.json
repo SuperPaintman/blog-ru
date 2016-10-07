@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "hexo": {
-    "version": "3.2.2"
+    "version": "3.2.0"
   },
   "dependencies": {
     "hexo": "3.2.0",
