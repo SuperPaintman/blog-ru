@@ -20,6 +20,6 @@ mv ${public_dir}/* "${deploy_dir}/"
 (cd "${deploy_dir}" \
     && git --no-pager diff \
     && git add -A . \
-    && git commit -m "Site updated: $(date '+%Y-%m-%d %H:%M:%S')" \
+    && git commit -m "Site updated: $(date -u '+%Y-%m-%d %H:%M:%S')" \
     && git push -q origin "${git_branch}" > /dev/null 2>&1 \
 )
